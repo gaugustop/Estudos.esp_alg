@@ -46,7 +46,7 @@ def maximum_value(num, op):
         for i in range(n - size):
             j = i + size
             my_min[i][j], my_max[i][j] = inf, -inf
-            value = evaluate(my_min[i][k], my_min[k + 1][j], op[k])
+            value = evaluate(my_min[i][0], my_min[0 + 1][j], op[0])
             for k in range(i, j):
                 temp = evaluate(my_min[i][k], my_min[k + 1][j], op[k])
                 value = min(value, temp)
