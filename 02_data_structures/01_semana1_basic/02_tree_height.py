@@ -3,6 +3,33 @@
 import sys
 import threading
 
+class Node:
+    def __init__(self,key):
+        self.key = key
+        self.childs = list()
+    def addChild(self,ChildKey):
+        self.childs.append(Node(ChildKey))
+
+def allocate_nodes(n, parents):
+    tree = list
+    for key in range(n):
+        tree.append(Node(key))
+    for i in range(n):
+        if parents[i] == -1:
+            root = i
+        else:
+            tree[parents[i]].addChild(i)
+    return tree, root
+
+# TODO: e se não tiver -1 ???
+
+def compute_height_bfs(tree,root):
+    height = 0
+    queue = [tree[root]]
+    while len(queue) != 0:
+        
+
+
 
 def compute_height(n, parents):
     # Replace this code with a faster implementation
