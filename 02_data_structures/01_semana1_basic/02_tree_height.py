@@ -7,27 +7,32 @@ class Node:
     def __init__(self,key):
         self.key = key
         self.childs = list()
-    def addChild(self,ChildKey):
-        self.childs.append(Node(ChildKey))
+    def addChild(self,child):
+        self.childs.append(child)
 
 def allocate_nodes(n, parents):
-    tree = list
+    tree = list()
     for key in range(n):
         tree.append(Node(key))
     for i in range(n):
         if parents[i] == -1:
             root = i
         else:
-            tree[parents[i]].addChild(i)
+            tree[parents[i]].addChild(tree[i])
     return tree, root
 
-# TODO: e se não tiver -1 ???
-
 def compute_height_bfs(tree,root):
+    level_count = 1
     height = 0
     queue = [tree[root]]
     while len(queue) != 0:
-        
+        node = queue.pop(0)
+        level_count -= 1
+        queue.extend(node.childs)
+        if level_count == 0:
+            height +=1
+            level_count = len(queue)
+    return height
 
 
 
@@ -47,7 +52,10 @@ def compute_height(n, parents):
 def main():
     n = int(input())
     parents = list(map(int, input().split()))
-    print(compute_height(n, parents))
+    tree,root = allocate_nodes(n,parents)
+    height = compute_height_bfs(tree,root)
+    # print(compute_height(n, parents))
+    print(height)
 
 
 # In Python, the default limit on recursion depth is rather low,
