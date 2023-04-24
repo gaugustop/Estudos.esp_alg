@@ -21,16 +21,18 @@ def shiftUp(H,i):
         i = parent(i)
     return H
 
-def shiftDown(H,i):
+def shiftDown(H,i, size):
     maxIndex = i
     l = leftChild(i)
-    if H[l] > H[maxIndex]:
+    if l <= size and H[l] > H[maxIndex]:
         maxIndex = l
-    if H[r] > H[maxIndex]:
+    r = rightChild(i)
+    if r <= size and H[r] > H[maxIndex]:
         maxIndex = r
     if i != maxIndex:
         H[i], H[maxIndex] = H[maxIndex], H[i]
         shiftDown(maxIndex)
+
 def build_heap(data):
     """Build a heap from ``data`` inplace.
 
