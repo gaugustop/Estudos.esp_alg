@@ -8,31 +8,18 @@
 
 # pseudocode from lecture
 #adaptado para zero indexing
-def parent(i):
-    return (i-1)//2
-def leftChild(i):
-    return 2*i + 1
-def rightChild(i):
-    return 2*i + 2
-
-def shiftUp(H,i):
-    while i > 0 and H[parent(i)] < H[i]:
-        H[parent(i)], H[i] = H[i], H[parent(i)]
-        i = parent(i)
-    return H
-
-def shiftDown(H,i, size):
-    maxIndex = i
-    l = leftChild(i)
-    if l <= size and H[l] > H[maxIndex]:
-        maxIndex = l
-    r = rightChild(i)
-    if r <= size and H[r] > H[maxIndex]:
-        maxIndex = r
-    if i != maxIndex:
-        H[i], H[maxIndex] = H[maxIndex], H[i]
-        shiftDown(maxIndex)
-
+# def shiftDown(H,i,size,swaps):
+#     maxIndex = i
+#     l = leftChild(i)
+#     if l <= size and H[l] < H[maxIndex]:  #sinal > trocado por < pois queremos o min-heap
+#         maxIndex = l
+#     r = rightChild(i)
+#     if r <= size and H[r] < H[maxIndex]:  #sinal > trocado por < pois queremos o min-heap
+#         maxIndex = r
+#     if i != maxIndex:
+#         H[i], H[maxIndex] = H[maxIndex], H[i]
+#         swaps.append([i,maxIndex])
+#         shiftDown(maxIndex)
 def build_heap(data):
     """Build a heap from ``data`` inplace.
 
@@ -52,18 +39,35 @@ def build_heap(data):
                 data[i], data[j] = data[j], data[i]
     return swaps
 
+def parent(i):
+    return (i-1)//2
+def leftChild(i):
+    return 2*i + 1
+def rightChild(i):
+    return 2*i + 2
+
+def shiftUp(H,i,swaps):
+    while i > 0 and H[parent(i)] > H[i]: #sinal < trocado por > pois queremos o min-heap
+        H[parent(i)], H[i] = H[i], H[parent(i)]
+        swaps.append([parent(i),i])
+        i = parent(i)
+
+def build_heap_efficient(data):
+    swaps = list()
+    for i in range(len(data)-1,-1,-1):
+        shiftUp(data,i,swaps)
+    return swaps
 
 def main():
     n = int(input())
     data = list(map(int, input().split()))
     assert len(data) == n
 
-    swaps = build_heap(data)
+    swaps = build_heap_efficient(data)
 
     print(len(swaps))
     for i, j in swaps:
         print(i, j)
-
 
 if __name__ == "__main__":
     main()
